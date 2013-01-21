@@ -525,5 +525,17 @@ print_results (void)
   if (report_flag & report_itemsets)
     free_closure ();
 
+  FILE *graph_out = xfopen ("graph.dot", "w");
+
+  print_rel_dot_graph (graph_out);
+
+  xfclose (graph_out);
+
+  FILE *red_out = xfopen ("reducted.dot", "w");
+
+  print_transitive_reduction (red_out);
+
+  xfclose (red_out);
+
   xfclose (out);
 }

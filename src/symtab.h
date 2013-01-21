@@ -232,7 +232,7 @@ extern location startsymbol_location;
 /* The symbol relations are represented by a directed graph. */
 
 /* The id of a node */
-typedef int graphid;
+typedef unsigned int graphid;
 
 typedef struct symgraphlink symgraphlink;
 
@@ -252,7 +252,8 @@ typedef struct symgraph symgraph;
 
 struct symgraph
 {
-  /** Identifier for the node: equal to the number of the symbol. */
+  /** Identifier for the node: equal to the number of the symbol or to nsyms +
+   * n - 1 for the nth groups. */
   graphid id;
 
   /** The list of related symbols that have a smaller precedence. */
@@ -260,6 +261,26 @@ struct symgraph
 
   /** The list of related symbols that have a greater precedence. */
   symgraphlink *pred;
+
+  /** If the node is a group, this is the list of symbols in the group. */
+  symgraph *symbols;
+
+  /* The next symbol in his group. 0 unless in a group. */
+  symgraph *groupnext;
+
+  /** The indegree and outdegree of the element. */
+  int indegree, outdegree;
+};
+
+typedef struct intvect intvect;
+
+/* A vector of integers that can only grow. */
+struct intvect
+{
+    /* The array. */
+    int *t;
+
+    int size;
 };
 
 /** Register a new precedence relation as used. */
@@ -270,13 +291,17 @@ void register_precedence (graphid first, graphid snd);
 
 void print_precedence_warnings (void);
 
+void print_rel_dot_graph (FILE *f);
+
 /*----------------------.
 | Symbol associativity  |
 `----------------------*/
 
-void register_assoc (int i, int j);
+void register_assoc (graphid i, graphid j);
 
 void print_assoc_warnings (void);
+
+void print_transitive_reduction (FILE *f);
 
 /*-----------------.
 | Semantic types.  |

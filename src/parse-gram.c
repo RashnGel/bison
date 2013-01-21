@@ -1,4 +1,4 @@
-/* A Bison parser, made by GNU Bison 2.7.1021-bb417-dirty.  */
+/* A Bison parser, made by GNU Bison 2.7.1001-e6a3-dirty.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.7.1021-bb417-dirty"
+#define YYBISON_VERSION "2.7.1001-e6a3-dirty"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -2528,18 +2528,18 @@ yyreduce:
   case 70:
 #line 541 "src/parse-gram.y" /* yacc.c:1669  */
     {
-       current_type = (yyvsp[0].uniqstr);
-       tag_seen = true;
-     }
+      current_type = (yyvsp[0].uniqstr);
+      tag_seen = true;
+    }
 #line 2535 "src/parse-gram.c" /* yacc.c:1669  */
     break;
 
   case 71:
 #line 546 "src/parse-gram.y" /* yacc.c:1669  */
     {
-       symbol_class_set ((yyvsp[0].symbol), current_class, (yylsp[0]), true);
-       symbol_type_set ((yyvsp[0].symbol), current_type, (yylsp[0]));
-     }
+      symbol_class_set ((yyvsp[0].symbol), current_class, (yylsp[0]), true);
+      symbol_type_set ((yyvsp[0].symbol), current_type, (yylsp[0]));
+    }
 #line 2544 "src/parse-gram.c" /* yacc.c:1669  */
     break;
 
