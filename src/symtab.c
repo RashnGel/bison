@@ -1075,7 +1075,7 @@ print_precedence_warnings (void)
           && !prec_nodes[i]->pred
           && !prec_nodes[i]->succ
           && s->assoc == precedence_assoc)
-        complain (&s->location, Wother,
+        complain (&s->location, Wprecedence,
                   _("useless precedence for %s"), s->tag);
     }
 }
@@ -1133,7 +1133,7 @@ print_assoc_warnings (void)
     {
       symbol *s = symbols[i];
       if (is_assoc_useless (s))
-        complain (&s->location, Wother,
+        complain (&s->location, Wprecedence,
                   _("useless associativity for %s"), s->tag);
     }
 }

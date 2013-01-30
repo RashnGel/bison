@@ -39,12 +39,12 @@ e: T A T
 ;
 ]])
 
-AT_BISON_CHECK([input.y], 0, [],
-[[input.y:5.13: warning: useless precedence for E [-Wother]
-input.y:2.7: warning: useless associativity for A [-Wother]
-input.y:2.9: warning: useless associativity for B [-Wother]
-input.y:3.8: warning: useless associativity for C [-Wother]
-input.y:4.11: warning: useless associativity for D [-Wother]
+AT_BISON_CHECK([-Wprecedence input.y], 0, [],
+[[input.y:5.13: warning: useless precedence for E [-Wprecedence]
+input.y:2.7: warning: useless associativity for A [-Wprecedence]
+input.y:2.9: warning: useless associativity for B [-Wprecedence]
+input.y:3.8: warning: useless associativity for C [-Wprecedence]
+input.y:4.11: warning: useless associativity for D [-Wprecedence]
 ]])
 
 AT_CLEANUP
@@ -110,26 +110,26 @@ int main (void)
 }
 ]])
 
-AT_BISON_CHECK([-o input.c input.y], [], [],
-[[input.y:24.13: warning: useless precedence for R [-Wother]
-input.y:24.15: warning: useless precedence for S [-Wother]
-input.y:24.17: warning: useless precedence for T [-Wother]
-input.y:24.19: warning: useless precedence for U [-Wother]
-input.y:25.13: warning: useless precedence for V [-Wother]
-input.y:25.15: warning: useless precedence for W [-Wother]
-input.y:18.8: warning: useless associativity for E [-Wother]
-input.y:18.10: warning: useless associativity for F [-Wother]
-input.y:18.12: warning: useless associativity for G [-Wother]
-input.y:19.8: warning: useless associativity for H [-Wother]
-input.y:19.10: warning: useless associativity for I [-Wother]
-input.y:20.8: warning: useless associativity for J [-Wother]
-input.y:21.8: warning: useless associativity for K [-Wother]
-input.y:22.8: warning: useless associativity for L [-Wother]
-input.y:22.10: warning: useless associativity for M [-Wother]
-input.y:22.12: warning: useless associativity for N [-Wother]
-input.y:23.11: warning: useless associativity for O [-Wother]
-input.y:23.13: warning: useless associativity for P [-Wother]
-input.y:23.15: warning: useless associativity for Q [-Wother]
+AT_BISON_CHECK([-Wprecedence -o input.c input.y], [], [],
+[[input.y:24.13: warning: useless precedence for R [-Wprecedence]
+input.y:24.15: warning: useless precedence for S [-Wprecedence]
+input.y:24.17: warning: useless precedence for T [-Wprecedence]
+input.y:24.19: warning: useless precedence for U [-Wprecedence]
+input.y:25.13: warning: useless precedence for V [-Wprecedence]
+input.y:25.15: warning: useless precedence for W [-Wprecedence]
+input.y:18.8: warning: useless associativity for E [-Wprecedence]
+input.y:18.10: warning: useless associativity for F [-Wprecedence]
+input.y:18.12: warning: useless associativity for G [-Wprecedence]
+input.y:19.8: warning: useless associativity for H [-Wprecedence]
+input.y:19.10: warning: useless associativity for I [-Wprecedence]
+input.y:20.8: warning: useless associativity for J [-Wprecedence]
+input.y:21.8: warning: useless associativity for K [-Wprecedence]
+input.y:22.8: warning: useless associativity for L [-Wprecedence]
+input.y:22.10: warning: useless associativity for M [-Wprecedence]
+input.y:22.12: warning: useless associativity for N [-Wprecedence]
+input.y:23.11: warning: useless associativity for O [-Wprecedence]
+input.y:23.13: warning: useless associativity for P [-Wprecedence]
+input.y:23.15: warning: useless associativity for Q [-Wprecedence]
 ]])
 AT_COMPILE([input])
 
@@ -174,17 +174,17 @@ f: B
 ;
 ]])
 
-AT_BISON_CHECK([-fcaret -o input.c input.y], 0, [],
-[[input.y:2.13: warning: useless precedence for Z [-Wother]
+AT_BISON_CHECK([-Wprecedence -fcaret -o input.c input.y], 0, [],
+[[input.y:2.13: warning: useless precedence for Z [-Wprecedence]
  %precedence Z
              ^
-input.y:5.7: warning: useless associativity for W [-Wother]
+input.y:5.7: warning: useless associativity for W [-Wprecedence]
  %left W
        ^
-input.y:6.8: warning: useless associativity for V [-Wother]
+input.y:6.8: warning: useless associativity for V [-Wprecedence]
  %right V
         ^
-input.y:7.11: warning: useless associativity for U [-Wother]
+input.y:7.11: warning: useless associativity for U [-Wprecedence]
  %nonassoc U
            ^
 ]])
@@ -1196,10 +1196,10 @@ e:   e '+' e
    ;
 ]])
 
-AT_BISON_CHECK([-o input.c input.y], 0, [],
+AT_BISON_CHECK([-Wall -o input.c input.y], 0, [],
 [[input.y: warning: 4 shift/reduce conflicts [-Wconflicts-sr]
-input.y:1.7-9: warning: useless associativity for '+' [-Wother]
-input.y:2.7-9: warning: useless associativity for '*' [-Wother]
+input.y:1.7-9: warning: useless associativity for '+' [-Wprecedence]
+input.y:2.7-9: warning: useless associativity for '*' [-Wprecedence]
 ]])
 AT_CLEANUP
 

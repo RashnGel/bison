@@ -9716,6 +9716,24 @@ no effect on the conflict report.
 Deprecated constructs whose support will be removed in future versions of
 Bison.
 
+@item precedence
+Useless precedence and associativity.  Bison detects whether defined precedence
+and associativity are uselful, and warns if not. For example, in the grammar
+below, Bison warns about useless associativity for @samp{=}:
+
+@example
+%nonassoc '='
+%%
+assign: VAR '=' NUM;
+@end example
+
+In this case, two @samp{=} in a row will be detected as a syntax error even without
+@code{%nonassoc} (there are no rule allowing that case), so the associativity is
+useless, and can be replaced by @code{%precedence}.  Bison then warns about useless
+precedence, because @samp{=} can be safely declared as a @code{%token} (there are no
+conflicts involving @samp{=} solved with precedence comparison).  This warning is
+disabled by default.
+
 @item other
 All warnings not categorized above.  These warnings are enabled by default.
 
