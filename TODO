@@ -1,16 +1,27 @@
 * Short term
 ** Graphviz display code thoughts
 The code for the --graph option is over two files: print_graph, and
-graphviz. I believe this is because Bison used to also produce VCG graphs,
-but since this is no longer true, maybe we could consider these files for
-fusion.
+graphviz. This is because Bison used to also produce VCG graphs, but since
+this is no longer true, maybe we could consider these files for fusion.
 
-Little effort factoring seems to have been given to factoring in these files,
-and their print-xml and print counterpart. We would very much like to re-use
-the pretty format of states from .output in the .dot
+An other consideration worth noting is that print_graph.c (correct me if I
+am wrong) should contain generic functions, whereas graphviz.c and other
+potential files should contain just the specific code for that output
+format. It will probably prove difficult to tell if the implementation is
+actually generic whilst only having support for a single format, but it
+would be nice to keep stuff a bit tidier: right now, the construction of the
+bitset used to show reductions is in the graphviz-specific code, and on the
+opposite side we have some use of \l, which is graphviz-specific, in what
+should be generic code.
 
-Also, the underscore in print_graph.[ch] isn't very fitting considering
-the dashes in the other filenames.
+Little effort seems to have been given to factoring these files and their
+rint{,-xml} counterpart. We would very much like to re-use the pretty format
+of states from .output for the graphs, etc.
+
+Also, the underscore in print_graph.[ch] isn't very fitting considering the
+dashes in the other filenames.
+
+Since graphviz dies on medium-to-big grammars, maybe consider an other tool?
 
 ** push-parser
 Check it too when checking the different kinds of parsers.  And be
@@ -165,13 +176,13 @@ part of $default.  Should we make the two reductions explicit, or just
 keep $default?  See the following point.
 
 ** Disabled Reductions
-See `tests/conflicts.at (Defaulted Conflicted Reduction)', and decide
+See 'tests/conflicts.at (Defaulted Conflicted Reduction)', and decide
 what we want to do.
 
 ** Documentation
 Extend with error productions.  The hard part will probably be finding
 the right rule so that a single state does not exhibit too many yet
-undocumented ``features''.  Maybe an empty action ought to be
+undocumented ''features''.  Maybe an empty action ought to be
 presented too.  Shall we try to make a single grammar with all these
 features, or should we have several very small grammars?
 
@@ -232,9 +243,9 @@ into
         exp: exp '+' exp | exp '&' exp;
 
 when there are no actions.  This can significantly speed up some
-grammars.  I can't find the papers.  In particular the book `LR
+grammars.  I can't find the papers.  In particular the book 'LR
 parsing: Theory and Practice' is impossible to find, but according to
-`Parsing Techniques: a Practical Guide', it includes information about
+'Parsing Techniques: a Practical Guide', it includes information about
 this issue.  Does anybody have it?
 
 

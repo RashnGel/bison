@@ -159,13 +159,13 @@ symbol_print (symbol const *s, FILE *f)
 {
   if (s)
     {
-      fprintf (f, "\"%s\"", s->tag);
+      fputs (s->tag, f);
       SYMBOL_ATTR_PRINT (type_name);
       SYMBOL_CODE_PRINT (destructor);
       SYMBOL_CODE_PRINT (printer);
     }
   else
-    fprintf (f, "<NULL>");
+    fputs ("<NULL>", f);
 }
 
 #undef SYMBOL_ATTR_PRINT
@@ -249,9 +249,12 @@ symbol_type_set (symbol *sym, uniqstr type_name, location loc)
     {
       if (sym->type_name)
         symbol_redeclaration (sym, "%type", sym->type_location, loc);
-      uniqstr_assert (type_name);
-      sym->type_name = type_name;
-      sym->type_location = loc;
+      else
+        {
+          uniqstr_assert (type_name);
+          sym->type_name = type_name;
+          sym->type_location = loc;
+        }
     }
 }
 
@@ -267,7 +270,8 @@ symbol_code_props_set (symbol *sym, code_props_type kind,
     symbol_redeclaration (sym, code_props_type_string (kind),
                           sym->props[kind].location,
                           code->location);
-  sym->props[kind] = *code;
+  else
+    sym->props[kind] = *code;
 }
 
 /*-----------------------------------------------------.
@@ -283,7 +287,8 @@ semantic_type_code_props_set (semantic_type *type,
     semantic_type_redeclaration (type, code_props_type_string (kind),
                                  type->props[kind].location,
                                  code->location);
-  type->props[kind] = *code;
+  else
+    type->props[kind] = *code;
 }
 
 /*---------------------------------------------------.
@@ -327,12 +332,15 @@ symbol_precedence_set (symbol *sym, int prec, assoc a, location loc)
 {
   if (a != undef_assoc)
     {
-      if (sym->prec != 0)
+      if (sym->prec)
         symbol_redeclaration (sym, assoc_to_string (a), sym->prec_location,
                               loc);
-      sym->prec = prec;
-      sym->assoc = a;
-      sym->prec_location = loc;
+      else
+        {
+          sym->prec = prec;
+          sym->assoc = a;
+          sym->prec_location = loc;
+        }
     }
 
   /* Only terminals have a precedence. */
@@ -366,7 +374,8 @@ symbol_class_set (symbol *sym, symbol_class class, location loc, bool declaring)
     {
       if (sym->status == declared && !warned)
         complain (&loc, Wother, _("symbol %s redeclared"), sym->tag);
-      sym->status = declared;
+      else
+        sym->status = declared;
     }
 }
 
@@ -447,7 +456,7 @@ semantic_type_check_defined (semantic_type *sem_type)
   /* <*> and <> do not have to be "declared".  */
   if (sem_type->status == declared
       || !*sem_type->tag
-      || STREQ(sem_type->tag, "*"))
+      || STREQ (sem_type->tag, "*"))
     {
       int i;
       for (i = 0; i < 2; ++i)
@@ -621,8 +630,8 @@ symbol_translation (symbol *this)
           (this->user_token_number,
            symbols[token_translations[this->user_token_number]],
            this);
-
-      token_translations[this->user_token_number] = this->number;
+      else
+        token_translations[this->user_token_number] = this->number;
     }
 
   return true;
@@ -1108,6 +1117,81 @@ free_symgraph_list (symgraph *s)
     }
 }
 
+/*---------------------------------------.
+| Deep clear a linked / adjacency list). |
+`---------------------------------------*/
+
+static void
+linkedlist_free (symgraphlink *node)
+{
+  if (node)
+    {
+      while (node->next)
+        {
+          symgraphlink *tmp = node->next;
+          free (node);
+          node = tmp;
+        }
+      free (node);
+    }
+}
+
+/*----------------------------------------------.
+| Clear and destroy association tracking table. |
+`----------------------------------------------*/
+
+static void
+assoc_free (void)
+{
+  int i;
+  for (i = 0; i < nsyms; ++i)
+    {
+      linkedlist_free (prec_nodes[i]->pred);
+      linkedlist_free (prec_nodes[i]->succ);
+      free (prec_nodes[i]);
+    }
+  free (prec_nodes);
+}
+
+/*---------------------------------------.
+| Initialize association tracking table. |
+`---------------------------------------*/
+
+static void
+init_assoc (void)
+{
+  graphid i;
+  used_assoc = xcalloc (nsyms, sizeof *used_assoc);
+  for (i = 0; i < nsyms; ++i)
+    used_assoc[i] = false;
+}
+
+/*------------------------------------------------------------------.
+| Test if the associativity for the symbols is defined and useless. |
+`------------------------------------------------------------------*/
+
+static inline bool
+is_assoc_useless (symbol *s)
+{
+  return s
+      && s->assoc != undef_assoc
+      && s->assoc != precedence_assoc
+      && !used_assoc[s->number];
+}
+
+/*-------------------------------.
+| Register a used associativity. |
+`-------------------------------*/
+
+void
+register_assoc (graphid i, graphid j)
+{
+  if (!used_assoc)
+    init_assoc ();
+  used_assoc[i] = true;
+  used_assoc[j] = true;
+}
+
 /*--------------------------------------------------.
 | Print a warning for unused precedence relations.  |
 `--------------------------------------------------*/
@@ -1118,17 +1202,29 @@ print_precedence_warnings (void)
   int i;
   if (!prec_nodes)
     init_prec_nodes ();
+  if (!used_assoc)
+    init_assoc ();
   for (i = 0; i < nsyms; ++i)
     {
       symbol *s = symbols[i];
       if (s
           && s->prec != 0
           && !prec_nodes[i]->pred
-          && !prec_nodes[i]->succ
-          && s->assoc == precedence_assoc)
-        complain (&s->location, Wprecedence,
-                  _("useless precedence for %s"), s->tag);
+          && !prec_nodes[i]->succ)
+        {
+          if (is_assoc_useless (s))
+            complain (&s->prec_location, Wprecedence,
+                      _("useless precedence and associativity for %s"), s->tag);
+          else if (s->assoc == precedence_assoc)
+            complain (&s->prec_location, Wprecedence,
+                      _("useless precedence for %s"), s->tag);
+        }
+      else if (is_assoc_useless (s))
+        complain (&s->prec_location, Wprecedence,
+                  _("useless associativity for %s, use %%precedence"), s->tag);
     }
+  free (used_assoc);
+  assoc_free ();
 }
 
 static intvect *
@@ -1618,19 +1714,6 @@ group_relations (void)
   free(gcreated);
 }
 
-/*---------------------------------------.
-| Initialize association tracking table. |
-`---------------------------------------*/
-
-static void
-init_assoc (void)
-{
-  graphid i;
-  used_assoc = xcalloc(nsyms, sizeof(*used_assoc));
-  for (i = 0; i < nsyms; ++i)
-    used_assoc[i] = false;
-}
-
 /*---------------------------------------------------.
 | Check if the symgraph is a group or a single node. |
 `---------------------------------------------------*/
@@ -1750,32 +1833,6 @@ print_rel_dot_graph (FILE *f)
         }
     }
   fprintf (f, "}");
-}
-
-/*------------------------------------------------------------------.
-| Test if the associativity for the symbols is defined and useless. |
-`------------------------------------------------------------------*/
-
-static inline bool
-is_assoc_useless (symbol *s)
-{
-  return s
-      && s->assoc != undef_assoc
-      && s->assoc != precedence_assoc
-      && !used_assoc[s->number];
-}
-
-/*-------------------------------.
-| Register a used associativity. |
-`-------------------------------*/
-
-void
-register_assoc (graphid i, graphid j)
-{
-  if (!used_assoc)
-    init_assoc ();
-  used_assoc[i] = true;
-  used_assoc[j] = true;
 }
 
 /*------------------------------------------------------.

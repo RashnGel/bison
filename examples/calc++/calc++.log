@@ -1,0 +1,199 @@
+PASS: examples/calc++/calc++.test (exit: 0)
+===========================================
+
+--(end of buffer or a NUL)
+--accepting rule at line 55 ("toto")
+--accepting rule at line 36 (" ")
+--accepting rule at line 44 (":=")
+--accepting rule at line 36 (" ")
+--accepting rule at line 47 ("1")
+--accepting rule at line 37 ("
+")
+--accepting rule at line 55 ("toto")
+--(end of buffer or a NUL)
+--accepting rule at line 37 ("
+")
+--(end of buffer or a NUL)
+--EOF (start condition 0)
+calc++: PASS: 1
+calc++: PASS: 2
+Starting parse
+Entering state 0
+Reducing stack by rule 2 (line 11295):
+-> $$ = nterm assignments (-:1.1: )
+Stack now 0
+Entering state 2
+Reading a token: Next token is token "identifier" (1.1: a)
+Shifting token "identifier" (1.1: a)
+Entering state 5
+Reading a token: Next token is token ":=" (1.3-4: )
+Shifting token ":=" (1.3-4: )
+Entering state 11
+Reading a token: Next token is token "number" (1.6: 1)
+Shifting token "number" (1.6: 1)
+Entering state 6
+Reducing stack by rule 11 (line 11310):
+   $1 = token "number" (1.6: 1)
+-> $$ = nterm exp (1.6: 1)
+Stack now 11 5 2 0
+Entering state 17
+Reading a token: Next token is token "identifier" (2.1: b)
+Reducing stack by rule 4 (line 11299):
+   $1 = token "identifier" (1.1: a)
+   $2 = token ":=" (1.3-4: )
+   $3 = nterm exp (1.6: 1)
+-> $$ = nterm assignment (1.1-6: )
+Stack now 2 0
+Entering state 7
+Reducing stack by rule 3 (line 11296):
+   $1 = nterm assignments (-:1.1: )
+   $2 = nterm assignment (1.1-6: )
+-> $$ = nterm assignments (-:1.1-6: )
+Stack now 0
+Entering state 2
+Next token is token "identifier" (2.1: b)
+Shifting token "identifier" (2.1: b)
+Entering state 5
+Reading a token: Next token is token ":=" (2.3-4: )
+Shifting token ":=" (2.3-4: )
+Entering state 11
+Reading a token: Next token is token "number" (2.6: 2)
+Shifting token "number" (2.6: 2)
+Entering state 6
+Reducing stack by rule 11 (line 11310):
+   $1 = token "number" (2.6: 2)
+-> $$ = nterm exp (2.6: 2)
+Stack now 11 5 2 0
+Entering state 17
+Reading a token: Next token is token "identifier" (3.1: c)
+Reducing stack by rule 4 (line 11299):
+   $1 = token "identifier" (2.1: b)
+   $2 = token ":=" (2.3-4: )
+   $3 = nterm exp (2.6: 2)
+-> $$ = nterm assignment (2.1-6: )
+Stack now 2 0
+Entering state 7
+Reducing stack by rule 3 (line 11296):
+   $1 = nterm assignments (-:1.1-6: )
+   $2 = nterm assignment (2.1-6: )
+-> $$ = nterm assignments (-:1.1-2.6: )
+Stack now 0
+Entering state 2
+Next token is token "identifier" (3.1: c)
+Shifting token "identifier" (3.1: c)
+Entering state 5
+Reading a token: Next token is token ":=" (3.3-4: )
+Shifting token ":=" (3.3-4: )
+Entering state 11
+Reading a token: Next token is token "number" (3.6: 3)
+Shifting token "number" (3.6: 3)
+Entering state 6
+Reducing stack by rule 11 (line 11310):
+   $1 = token "number" (3.6: 3)
+-> $$ = nterm exp (3.6: 3)
+Stack now 11 5 2 0
+Entering state 17
+Reading a token: Next token is token "identifier" (4.1: d)
+Reducing stack by rule 4 (line 11299):
+   $1 = token "identifier" (3.1: c)
+   $2 = token ":=" (3.3-4: )
+   $3 = nterm exp (3.6: 3)
+-> $$ = nterm assignment (3.1-6: )
+Stack now 2 0
+Entering state 7
+Reducing stack by rule 3 (line 11296):
+   $1 = nterm assignments (-:1.1-2.6: )
+   $2 = nterm assignment (3.1-6: )
+-> $$ = nterm assignments (-:1.1-3.6: )
+Stack now 0
+Entering state 2
+Next token is token "identifier" (4.1: d)
+Shifting token "identifier" (4.1: d)
+Entering state 5
+Reading a token: Next token is token ":=" (4.3-4: )
+Shifting token ":=" (4.3-4: )
+Entering state 11
+Reading a token: Next token is token "identifier" (4.6: a)
+Shifting token "identifier" (4.6: a)
+Entering state 9
+Reducing stack by rule 10 (line 11309):
+   $1 = token "identifier" (4.6: a)
+-> $$ = nterm exp (4.6: 1)
+Stack now 11 5 2 0
+Entering state 17
+Reading a token: Next token is token "+" (4.8: )
+Shifting token "+" (4.8: )
+Entering state 13
+Reading a token: Next token is token "identifier" (4.10: b)
+Shifting token "identifier" (4.10: b)
+Entering state 9
+Reducing stack by rule 10 (line 11309):
+   $1 = token "identifier" (4.10: b)
+-> $$ = nterm exp (4.10: 2)
+Stack now 13 17 11 5 2 0
+Entering state 19
+Reading a token: Next token is token "*" (4.12: )
+Shifting token "*" (4.12: )
+Entering state 14
+Reading a token: Next token is token "identifier" (4.14: c)
+Shifting token "identifier" (4.14: c)
+Entering state 9
+Reducing stack by rule 10 (line 11309):
+   $1 = token "identifier" (4.14: c)
+-> $$ = nterm exp (4.14: 3)
+Stack now 14 19 13 17 11 5 2 0
+Entering state 20
+Reducing stack by rule 7 (line 11306):
+   $1 = nterm exp (4.10: 2)
+   $2 = token "*" (4.12: )
+   $3 = nterm exp (4.14: 3)
+-> $$ = nterm exp (4.10-14: 6)
+Stack now 13 17 11 5 2 0
+Entering state 19
+Reading a token: Next token is token "identifier" (5.1: d)
+Reducing stack by rule 5 (line 11304):
+   $1 = nterm exp (4.6: 1)
+   $2 = token "+" (4.8: )
+   $3 = nterm exp (4.10-14: 6)
+-> $$ = nterm exp (4.6-14: 7)
+Stack now 11 5 2 0
+Entering state 17
+Next token is token "identifier" (5.1: d)
+Reducing stack by rule 4 (line 11299):
+   $1 = token "identifier" (4.1: d)
+   $2 = token ":=" (4.3-4: )
+   $3 = nterm exp (4.6-14: 7)
+-> $$ = nterm assignment (4.1-14: )
+Stack now 2 0
+Entering state 7
+Reducing stack by rule 3 (line 11296):
+   $1 = nterm assignments (-:1.1-3.6: )
+   $2 = nterm assignment (4.1-14: )
+-> $$ = nterm assignments (-:1.1-4.14: )
+Stack now 0
+Entering state 2
+Next token is token "identifier" (5.1: d)
+Shifting token "identifier" (5.1: d)
+Entering state 5
+Reading a token: Next token is token "end of file" (6.1: )
+Reducing stack by rule 10 (line 11309):
+   $1 = token "identifier" (5.1: d)
+-> $$ = nterm exp (5.1: 7)
+Stack now 2 0
+Entering state 8
+Next token is token "end of file" (6.1: )
+Reducing stack by rule 1 (line 11292):
+   $1 = nterm assignments (-:1.1-4.14: )
+   $2 = nterm exp (5.1: 7)
+-> $$ = nterm unit (-:1.1-5.1: )
+Stack now 0
+Entering state 1
+Next token is token "end of file" (6.1: )
+Shifting token "end of file" (6.1: )
+Entering state 3
+Cleanup: popping token "end of file" (6.1: )
+Cleanup: popping nterm unit (-:1.1-5.1: )
+calc++: PASS: 3
+calc++: PASS: 4
+3.1: syntax error, unexpected end of file, expecting ( or identifier or number
+calc++: PASS: 5

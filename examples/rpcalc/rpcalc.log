@@ -1,0 +1,9 @@
+PASS: examples/rpcalc/rpcalc.test (exit: 0)
+===========================================
+
+rpcalc: PASS: 1
+rpcalc: PASS: 2
+rpcalc: PASS: 3
+rpcalc: PASS: 4
+rpcalc: PASS: 5
+rpcalc: PASS: 6

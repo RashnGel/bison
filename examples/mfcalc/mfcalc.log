@@ -1,0 +1,92 @@
+PASS: examples/mfcalc/mfcalc.test (exit: 0)
+===========================================
+
+mfcalc: PASS: 1
+mfcalc: PASS: 2
+Starting parse
+Entering state 0
+Reducing stack by rule 1 (line 2464):
+-> $$ = nterm input ()
+Stack now 0
+Entering state 1
+Reading a token: Next token is token '(' ()
+Shifting token '(' ()
+Entering state 9
+Reading a token: Next token is token NUM (1)
+Shifting token NUM (1)
+Entering state 4
+Reducing stack by rule 6 (line 2479):
+   $1 = token NUM (1)
+-> $$ = nterm exp (1)
+Stack now 0 1 9
+Entering state 16
+Reading a token: Next token is token '+' ()
+Shifting token '+' ()
+Entering state 18
+Reading a token: Next token is token NUM (2)
+Shifting token NUM (2)
+Entering state 4
+Reducing stack by rule 6 (line 2479):
+   $1 = token NUM (2)
+-> $$ = nterm exp (2)
+Stack now 0 1 9 16 18
+Entering state 27
+Reading a token: Next token is token ')' ()
+Reducing stack by rule 10 (line 2483):
+   $1 = nterm exp (1)
+   $2 = token '+' ()
+   $3 = nterm exp (2)
+-> $$ = nterm exp (3)
+Stack now 0 1 9
+Entering state 16
+Next token is token ')' ()
+Shifting token ')' ()
+Entering state 25
+Reducing stack by rule 16 (line 2489):
+   $1 = token '(' ()
+   $2 = nterm exp (3)
+   $3 = token ')' ()
+-> $$ = nterm exp (3)
+Stack now 0 1
+Entering state 11
+Reading a token: Next token is token '*' ()
+Shifting token '*' ()
+Entering state 19
+Reading a token: Next token is token NUM (3)
+Shifting token NUM (3)
+Entering state 4
+Reducing stack by rule 6 (line 2479):
+   $1 = token NUM (3)
+-> $$ = nterm exp (3)
+Stack now 0 1 11 19
+Entering state 28
+Reading a token: Next token is token '\n' ()
+Reducing stack by rule 12 (line 2485):
+   $1 = nterm exp (3)
+   $2 = token '*' ()
+   $3 = nterm exp (3)
+-> $$ = nterm exp (9)
+Stack now 0 1
+Entering state 11
+Next token is token '\n' ()
+Shifting token '\n' ()
+Entering state 22
+Reducing stack by rule 4 (line 2472):
+   $1 = nterm exp (9)
+   $2 = token '\n' ()
+-> $$ = nterm line ()
+Stack now 0 1
+Entering state 10
+Reducing stack by rule 2 (line 2465):
+   $1 = nterm input ()
+   $2 = nterm line ()
+-> $$ = nterm input ()
+Stack now 0
+Entering state 1
+Reading a token: Now at end of input.
+Shifting token $end ()
+Entering state 2
+Stack now 0 1 2
+Cleanup: popping token $end ()
+Cleanup: popping nterm input ()
+mfcalc: PASS: 3
