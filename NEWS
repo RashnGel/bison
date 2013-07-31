@@ -2,6 +2,15 @@ GNU Bison NEWS
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Alias improvement
+
+  Aliases were formerly handled this way: information about the symbol was
+  repeated in the symbol and the alias, and any discrepancy was resolved
+  after reading the whole grammar.
+
+  Now, however, the symbol and the alias share a pointer to a separate
+  structure containing the common information, and any incompatible
+  statement is thus detected at the moment it is read.
 
 * Noteworthy changes in release 3.0 (2013-07-25) [stable]
 
